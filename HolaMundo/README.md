@@ -604,3 +604,22 @@ switch (dia) {
 }
 ```
 
+## Etiquetas en las sentencias for y while
+
+En Java, las etiquetas (labels) se pueden usar para identificar un bloque de código específico dentro de estructuras de control como `for`, `while` o `do-while`. Esto es útil para controlar el flujo de ejecución, especialmente cuando se desea salir de múltiples niveles de bucles anidados.
+
+### Sintaxis de etiquetas
+
+```javalabelName:
+for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
+        if (i == 2 && j == 2) {
+            break labelName; // Salir del bucle etiquetado
+        }
+        System.out.println("i: " + i + ", j: " + j);
+    }
+}
+```
+
+En este ejemplo, cuando `i` es igual a 2 y `j` es igual a 2, se ejecuta `break labelName`, lo que hace que el programa salga del bucle externo etiquetado como `labelName`, terminando ambos bucles.
+
