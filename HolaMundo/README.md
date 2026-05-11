@@ -593,20 +593,30 @@ println("Otro día");
 - Código más limpio que muchos if-else
 
 - ### ⚠️ Nota importante
+
 En switch, el break evita que se ejecuten los siguientes casos (fall-through).
 Desde Java moderno, existe una versión más limpia:
 
 ```java
-switch (dia) {
-   case 1 -> System.out.println("Lunes");
-   case 2 -> System.out.println("Martes");
-   default -> System.out.println("Otro día");
+switch(dia){
+        case 1->System.out.
+
+println("Lunes");
+   case 2->System.out.
+
+println("Martes");
+
+default ->System.out.
+
+println("Otro día");
 }
 ```
 
 ## Etiquetas en las sentencias for y while
 
-En Java, las etiquetas (labels) se pueden usar para identificar un bloque de código específico dentro de estructuras de control como `for`, `while` o `do-while`. Esto es útil para controlar el flujo de ejecución, especialmente cuando se desea salir de múltiples niveles de bucles anidados.
+En Java, las etiquetas (labels) se pueden usar para identificar un bloque de código específico dentro de estructuras de
+control como `for`, `while` o `do-while`. Esto es útil para controlar el flujo de ejecución, especialmente cuando se
+desea salir de múltiples niveles de bucles anidados.
 
 ### Sintaxis de etiquetas
 
@@ -621,5 +631,147 @@ for (int i = 0; i < 5; i++) {
 }
 ```
 
-En este ejemplo, cuando `i` es igual a 2 y `j` es igual a 2, se ejecuta `break labelName`, lo que hace que el programa salga del bucle externo etiquetado como `labelName`, terminando ambos bucles.
+En este ejemplo, cuando `i` es igual a 2 y `j` es igual a 2, se ejecuta `break labelName`, lo que hace que el programa
+salga del bucle externo etiquetado como `labelName`, terminando ambos bucles.
 
+## Clases de Envoltorio o Wraper
+
+Las wrapper classes (clases envoltorio) en Java son clases que “envuelven” a los tipos primitivos para tratarlos como
+objetos.
+
+![img.png](assets/Tipos_dato_referencia.png)
+
+### ¿Por qué existen?
+
+Los tipos primitivos (int, double, etc.) no son objetos.
+
+Pero muchas partes de Java trabajan únicamente con objetos, por ejemplo:
+
+- Colecciones (ArrayList, HashMap)
+- Genéricos
+- Algunos métodos/utilidades del lenguaje
+
+Entonces Java necesita una forma de convertir un valor primitivo en objeto.
+
+### Autoboxing y Unboxing en Java
+
+Java cuenta con un mecanismo automático llamado Autoboxing y Unboxing, el cual permite convertir entre tipos primitivos
+y sus clases wrapper sin hacerlo manualmente.
+
+#### Autoboxing
+
+El Autoboxing ocurre cuando Java convierte automáticamente un tipo primitivo en su clase envoltorio (wrapper class).
+
+Ejemplo:
+
+```java
+Integer numero = 10;
+```
+
+En este caso, Java transforma internamente el valor 10 en un objeto Integer.
+
+Equivalente manual:
+
+```java
+Integer numero = Integer.valueOf(10);
+```
+
+#### Unboxing
+
+El Unboxing ocurre cuando Java convierte automáticamente un objeto wrapper en un tipo primitivo.
+
+Ejemplo:
+
+```java
+Integer numero = 20;
+int valor = numero;
+```
+
+Java realiza internamente algo similar a:
+
+```java
+int valor = numero.intValue();
+```
+
+- Autoboxing: primitivo → objeto wrapper.
+- Unboxing: objeto wrapper → primitivo.
+- Java realiza estas conversiones automáticamente para facilitar el trabajo con objetos y colecciones.
+
+## Clases Wrapper numéricas y operadores relacionales
+
+Java compara una variable dependiendo si es un objeto o un primitivo, en caso de ser un objeto, la comparación es por
+referencia, si es uun primitivo, la comparación es por valor.
+Sin embargo, esto se ve solo desde un número mayor o igual a 128.
+
+Con los `Integer` existe algo llamado `Integer Cache`.
+
+Java guarda en memoria ciertos valores pequeños para reutilizarlos y ahorrar recursos.
+
+El rango cacheado normalmente es:
+
+−128≤x≤127
+
+Por eso, cuando comparas wrappers con == dentro de ese rango, puede parecer que funciona “correctamente”.
+
+Ejemplo con un valor menor a 128
+
+```java
+Integer a = 127;
+Integer b = 127;
+
+System.out.println(a ==b); // true
+```
+
+Aquí ambos apuntan al mismo objeto cacheado en memoria.
+
+Pero con 128 cambia
+
+```java
+Integer a = 128;
+Integer b = 128;
+
+System.out.println(a ==b); // false
+```
+
+Ahora Java crea objetos distintos.
+
+Por eso es importante comparar los valores con el método `equals` o convirtiendo los valores a primitivos.
+
+## Comparación con == Boolean
+
+Con Boolean, el comportamiento es distinto a Integer.
+
+Java reutiliza únicamente dos objetos:
+
+```java
+Boolean.TRUE
+Boolean.FALSE
+```
+
+Por eso normalmente esto funciona:
+
+```java
+Boolean a = true;
+Boolean b = true;
+
+System.out.println(a == b); // true
+```
+
+y también:
+
+```java
+Boolean a = false;
+Boolean b = false;
+
+System.out.println(a == b); // true
+```
+
+Porque Java reutiliza los mismos objetos internos.
+
+Pero sigue siendo mejor usar `.equals()`
+
+Aunque == parezca funcionar con Boolean, la práctica recomendada sigue siendo:
+
+```java
+a.equals(b)
+```
